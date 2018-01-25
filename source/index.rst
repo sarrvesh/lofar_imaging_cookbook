@@ -7,13 +7,14 @@ Welcome to LOFAR Imaging Cookbook's documentation!
 ==================================================
 
 .. only:: html
-
+   
    This web site can also be downloaded as a pdf :download:`LOFARImagingCookbook_latest.pdf <docs/LOFARImagingCookbook_latest.pdf>`.
 
 .. toctree::
    :maxdepth: 1
    :caption: Contents:
 
+   editorcorner
    gettingstarted
    datainspection
    aoflagger
