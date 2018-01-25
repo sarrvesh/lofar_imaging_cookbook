@@ -1,61 +1,9 @@
 Introduction to LOFAR computing facilities [#f1]_
 =================================================
 
-------------------------
-The LOFAR cluster layout
-------------------------
+**TODO: A GOOD INTRODUCTION TO THIS CHAPTER.**
 
-The correlated data coming from the Cobalt [#f2]_ correlator are stored on a cluster of machines called CEP4_ cluster. CEP4_ has been added to the LOFAR offline system at the beginning of 2017. Till December 2016, another cluster of computing machines was used to store and process the data (CEP2). Nowadays, CEP4_ is normally used by the Radio Observatory to process the data through the initial stages of the data reduction (flagging and averaging of the visibilities), while another CEP facility is currently used by both the commissioners and LOFAR users to manually play with the data and understand which strategy to use for the calibration and the imaging: the new  commissioning cluster `CEP3`_.
-CEP4_ facility provides technologies that were not available on CEP2, especially with respect to resource management.
-
-In the following sections we will focus on discussing the architecture of CEP facilities as well as their usage policies.
-
-.. _CEP4:
-
---------------------------------
-The LOFAR phase 4 cluster - CEP4
---------------------------------
-
-The LOFAR CEP4 cluster is composed by 50 compute nodes (**cpu01-50**), 4 GPU nodes (**gpu01-04**), 18 storage nodes (**data01-18**), 50 compute nodes (**cpu01-50**), 2 meta-data nodes (**meta01-02**), 2 head nodes (**head01-head02**) and 1 management node (**mgmt01**).
-A detailed description of all the packages available on the new cluster and on its network interface can be found on the `wiki <https://www.astron.nl/lofarwiki/doku.php?id=cep4:system>`_. Processed data products will usually made available to the user via the Long-Term Archive, but may also be copied to the `CEP3`_ cluster upon request for further analysis by the user in the original proposal. Due to the intensive nature of the standard data pipelines and the need for these compute resources to be allocated and scheduled by Radio Observatory staff, access to the resources on CEP4 will be strictly limited, with a few exceptions, to the Radio Observatory. In the following, a short description of the computing characteristics/performances of the new cluster is given.
-
-The Lofar Phase 4 cluster consists of:
-
-+ 50 compute nodes (called cpu01..cpu50)
-+ 4 GPU nodes (gpu01..gpu04)
-+ 18 storage nodes (data01..data18)
-+ 2 meta-data nodes (meta01..meta02)
-+ 2 head nodes (head01..head02)
-+ 1 management node (mgmt01)
-
-Each node is reachable as XXXX.cep4.control.lofar. Users are only allowed on head01 and head02. Each compute node consists of:
-
-+ CPU: Intel Xeon E5-2680v3 2.5 GHz (12 cores, HyperThreading disabled)
-+ Memory: 256GB @ 2133 MHz
-+ Disk: 2x 300GB 10Krpm SAS RAID
-+ Network: 2x 1GbE, 2x 10GbE, 1x FDR InfiniBand
-
-Each GPU node consists of:
-
-+ CPU: Intel Xeon E5-2630v3 2.4 GHz (8 cores, HyperThreading disabled)
-+ Memory: 320GB @ 1866 MHz
-+ Disk: 2x 300GB 10Krpm SAS RAID + 2x 6TB 7.2Krpm SAS RAID
-+ Network: 2x 1GbE, 2x 10GbE, 1x FDR InifiniBand
-
-Each head node consists of:
-
-+ CPU: Intel Xeon E5-2603v3 1.6 GHz (6 cores, HyperThreading disabled)
-+ Memory: 128GB at 1600 MHz
-+ Disk: 2x 300GB 10Krpm SAS RAID + 2x 6TB 7.2Krpm SAS RAID
-+ Network: 2x 1GbE, 2x 10GbE, 1x FDR InifiniBand
-
-The other nodes are not accessible (storage, meta-data, and management nodes).
-
-**Storage:** The storage and meta-data nodes provide about 2PB LustreFS global filesystem through the InfiniBand network to all nodes in the data partition, thus implying that all nodes see the same data.
-
-**Processing:** CEP4 will use a SLURM batch scheduling system to schedule and run all observation and processing jobs on the cluster.
-
-NOTE: It is emphasised again that CEP4 is not meant for commissioning work. For that, commissioners can use CEP3 (see access policies here). It is emphasized that the disks on CEP3 are not intended for long term storage of results. As it is impossible for the Observatory to micro-manage the disk space, commissioners should be aware that disk deletions could happen with very little warning.
+In the following sections we will focus on discussing the architecture of CEP3 as well as its usage policies.
 
 ----
 CEP3
@@ -270,7 +218,6 @@ Data transfers from CEP4 to CEP3 should always be coordinated with the Radio Obs
 .. rubric:: Footnotes
 
 .. [#f1] This chapter is maintained by `M. Iacobelli <mailto:iacobelli@astron.nl>`_.
-.. [#f2] It is located in Groningen, The Netherlands.
 .. [#f3] The actual host name is lfw.lofar.eu (lfw=LOFAR firewall), but this alias will work fine.
 .. [#f4] Your default password will be communicated to you at the moment of the creation of your Lofar account by `Teun Grit <mailto:grit@astron.nl>`_.
 .. [#f5] You may have to log out of and log in again to the portal first.
