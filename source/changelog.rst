@@ -11,6 +11,18 @@ The LOFAR software is continuously improving and, as a consequence, several proc
 Overview of recent changes
 --------------------------
 
+^^^^^^^^^^^^^^^^^^^^^^^^^
+Version 23.1 (2018/10/10)
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
++ Chapter "Running LOFAR pipelines inside Docker" updated for singularity
+
+^^^^^^^^^^^^^^^^^^^^^^^^^
+Version 23.0 (2018/04/11)
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
++ Chapter "Running LOFAR pipelines inside Docker" added
+
 ^^^^^^^^^^^^^^^^^^^^^^^^
 Version 22 (2018/01/10)
 ^^^^^^^^^^^^^^^^^^^^^^^^
