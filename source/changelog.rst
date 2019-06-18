@@ -12,7 +12,7 @@ Overview of recent changes
 --------------------------
 
 ^^^^^^^^^^^^^^^^^^^^^^^^^
-Version 23.1 (2018/10/10)
+Version 23.2 (2019/06/18)
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
 + Chapter "Running LOFAR pipelines inside Docker" updated for singularity
