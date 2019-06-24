@@ -1,5 +1,5 @@
-Running LOFAR imaging pipelines inside Docker [#f1]_
-====================================================
+Running LOFAR imaging pipelines using Docker/Singularity [#f1]_
+================================================================
 
 The now standard LOFAR imaging pipelines (like prefactor and factor) depend on a variety of software packages and this can be hard for some users to install all the necessary software packages, and their dependencies on their machines. In this chapter, we present an overview of a docker image that comes pre-packaged with all the tools that a user would need to run the LOFAR pipelines. For other methods to install LOFAR software, see the `LOFAR User Software <https://www.astron.nl/lofarwiki/doku.php?id=public:user_software:start>`_ section on the LOFAR wiki.
 
@@ -10,7 +10,7 @@ With this new docker framework [#f2]_, initializing your LOFAR processing framew
    
 and frees the user (and sysadmins) from building all the required software packages. The following sections provide an overview of how to install and run LOFAR imaging pipelines using the docker.
 
-Any questions concerning the docker image should be addressed to `science operations and support <mailto:sos@astron.nl>`_. Note however that **this docker framework is experimental and support for it from the SOS group will be provided on a best effort basis**.
+Any questions concerning the docker image should be addressed to `science operations and support <https://support.astron.nl/rohelpdesk>`_. Note however that **this docker framework is experimental and support for it from the SOS group will be provided on a best effort basis**.
 
 ----------------------------------
 What is in the LOFAR docker image?
@@ -18,19 +18,17 @@ What is in the LOFAR docker image?
 
 The docker image contains all the software packages that a user needs to run the LOFAR imaging pipelines like prefactor and factor. This includes the LOFAR offline software suite (containing tools like NDPPP and genericpipeline) along with other external tools like LoSoTo, AOFlagger, and WSClean. All packages included in this docker image are listed below:
 
-+ Casacore (version 2.4.1 including measures data)
-+ Casarest
-+ python-casacore (version 2.2.1)
-+ AOFlagger (version 2.12.1)
++ Casacore (version 3.1.0 including measures data)
++ Casarest (version 1.5.0)
++ python-casacore (version 3.0.0)
++ AOFlagger (version 2.14)
 + Source finder pyBDSF 
-+ LOFAR software (version 3.2.1)
-+ WSClean (version 2.6 including support for LOFAR primary beam)
++ LOFAR software (version 4.0.0)
++ WSClean (version 2.7 including support for LOFAR primary beam and IDG)
 + LoSoTo (release 2.0)
-+ RMextract
++ RMextract (version 0.4)
 + LSMTool
 + Dysco
-+ Prefactor (version 2.0.3)
-+ Factor (version 1.3)
 + Python packages (including numpy, scipy, matplotlib)
 
 --------------------------------
@@ -110,19 +108,19 @@ Now, you (as **root** inside the container) can execute commands like NDPPP or w
    
 If you run the command **id**, you should see that the UID and GID of your user inside the container should be the same as that on the host.
 
--------------------------------------------------
-How to run prefactor inside the docker container?
--------------------------------------------------
+-----------------------------------------------------
+How to run prefactor 3.0 inside the docker container?
+-----------------------------------------------------
 
-In this section, we will demonstrate how to run the prefactor pipelines inside the docker container. For this example, we will follow the steps needed to run the calibrator part of prefactor, but the steps should be similar for the other pipelines that are part of prefactor. In this case, we will assume that the pipeline will be run from the directory /home/sarrvesh/dockertest/ and that all required measurement sets are available in /home/sarrvesh/dockertest/calibrator/.
+In this section, we will demonstrate how to run the prefactor pipelines inside the docker container. For this example, we will follow the steps needed to run the calibrator part of prefactor, but the steps should be similar for the other pipelines that are part of prefactor. In this case, we will assume that the pipeline will be run from the directory /home/sarrvesh/dockertest/ and that all required measurement sets are available in /home/sarrvesh/dockertest/calibrator/. We will also assume that you have downloaded prefactor 3.0 from `GitHub <https://github.com/lofar-astron/prefactor>`_ to the location /home/sarrvesh/prefactor/.
    
 Now, start the docker container using the command ::
 
    $ docker run -it -e USER -v $HOME/dockertest:$HOME/dockertest -e HOME -w $HOME --rm lofaruser/imaging-pipeline:latest
 
-Once inside the container, you need source ::
+Once inside the container, you need to source ::
 
-    $ source /lofarsoft/lofarinit.sh
+    $ source /opt/lofarsoft/lofarinit.sh
    
 Navigate to the working directory /home/sarrvesh/dockertest ::
 
@@ -173,12 +171,11 @@ Navigate to the working directory /home/sarrvesh/dockertest ::
 Next, we will create the working and runtime directories needed to run prefactor. Also, copy the **pipeline.cfg** file to the current directory. ::
 
     $ mkdir working runtime
-    $ cp /lofarsoft/share/pipeline/pipeline.cfg .
+    $ cp /opt/lofarsoft/share/pipeline/pipeline.cfg .
    
 Edit the pipeline.cfg file so that the keys runtime\_directory, working\_directory, and log_file point to the correct locations inside the container. ::
 
    runtime_directory = /home/sarrvesh/dockertest/runtime/
-   recipe_directories = [%(pythonpath)s/lofarpipe/recipes,/lofarsoft/prefactor-2.0.3/]
    working_directory = /home/sarrvesh/dockertest/working/
    log_file = /home/sarrvesh/dockertest/log/pipeline-%(job_name)s-%(start_time)s.log
    xml_stat_file = /home/sarrvesh/dockertest/log/pipeline-%(job_name)s-%(start_time)s-statistics.xml
@@ -190,25 +187,17 @@ You should also add the following lines to the end of the pipeline.cfg file ::
    
 Next, copy the Pre-Facet-Calibrator.parset ::
 
-    $ cp /lofarsoft/prefactor-2.0.3/Pre-Facet-Calibrator.parset .
+    $ cp /home/sarrvesh/prefactor/Pre-Facet-Calibrator.parset .
    
 and edit the following keys in the parset ::
 
-   ! cal_input_path       = /home/sarrvesh/dockertest/calibrator/
-   ! calibrator_path_skymodel = /lofarsoft/prefactor-2.0.3/skymodels/
-   ! inspection_directory     = /home/sarrvesh/dockertest/plots/
-   ! cal_values_directory     = /home/sarrvesh/dockertest/cals/
-   ! calib_cal_parset          = /lofarsoft/prefactor-2.0.3/parsets/calibcal.parset
-   ! find_skymodel_cal_auto    = /lofarsoft/prefactor-2.0.3/scripts/find_skymodel_cal.py
-   ! losoto_importer           = /lofarsoft/prefactor-2.0.3/scripts/losotoImporter.py
-   ! fitclock_script           = /lofarsoft/prefactor-2.0.3/scripts/fit_clocktec_initialguess_losoto.py
-   ! fitamps_script            = /lofarsoft/prefactor-2.0.3/scripts/amplitudes_losoto_3.py
-   ! plotsols_script           = /lofarsoft/prefactor-2.0.3/scripts/examine_npys.py
-   ! fit_XYoffset_script       = /lofarsoft/prefactor-2.0.3/scripts/find_cal_global_phaseoffset_losoto.py
-   ! plotphases_script         = /lofarsoft/prefactor-2.0.3/scripts/plot_solutions_all_stations.py
-   ! losoto_executable         = /lofarsoft/bin/losoto
+   ! cal_input_path           =  /home/sarrvesh/dockertest/calibrator/
+   ! cal_input_pattern        =  *.MS
+   ! prefactor_directory      =  /home/sarrvesh/prefactor/
+   ! losoto_directory         =  /opt/lofarsoft/
+   ! aoflagger                =  /opt/lofarsoft/bin/aoflagger
    
-Note that the latest version of the prefactor parset is available inside the container in the /lofarsoft directory. 
+For documentation on the other keys in parset, see `prefactor documentation <https://www.astron.nl/citt/prefactor/>`_. 
 
 Finally, run the Pre-Facet-Calibrator.parset using genericpipeline as ::
 
@@ -228,24 +217,27 @@ This will create a new file called lofar-pipeline.simg. You can execute the cont
    
 Once inside the container, you should source ::
 
-   source /lofarsoft/lofarinit.sh 
-   
+   source /opt/lofarsoft/lofarinit.sh 
+
+
+Alternately, you can also download the singularity image (containing the same packages as the docker image) from this `link <https://www.dropbox.com/s/r5w5p1qdefp64g4/lofar.simg?dl=0>`_. Contact the `Science Operations & Support <https://support.astron.nl/rohelpdesk>`_ if you have trouble running the singularity image.
+
 ---
 FAQ
 ---
 
-**Where are the default RFI strategies stored in the docker?**
+**Where are the default RFI strategies stored in the docker container?**
 
-   The default RFI strategies (LBAdefault and HBAdefault) are stored in the directory /lofarsoft/share/rfistrategies
+   The default RFI strategies (LBAdefault and HBAdefault) are stored in the directory /opt/lofarsoft/share/rfistrategies
 
 
 **Where can I find the pipeline.cfg file inside the docker container?**
 
-   The pipeline.cfg file that is needed for run prefactor is stored in the directory /lofarsoft/share/pipeline
+   The pipeline.cfg file that is needed for run prefactor is stored in the directory /opt/lofarsoft/share/pipeline
 
 **I get an "Illegal instruction error" when I run the docker image. What does this mean?**
 
-   This probably means that you are running an older/incompatible CPU. A docker image might have to built on your machine. Please contact Science Operations & Support for further assistance if you encounter this.
+   This probably means that you are running an older/incompatible CPU. A docker image might have to be built on your machine. Please contact Science Operations & Support for further assistance if you encounter this.
    
 
 .. rubric:: Footnotes

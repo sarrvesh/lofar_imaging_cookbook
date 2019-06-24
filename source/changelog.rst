@@ -3,8 +3,6 @@ Changelog
 
 The latest released version of the cookbook is available `online <http://www.astron.nl/radio-observatory/lofar/lofar-imaging-cookbook>`_.
 
-This link is advertised on the LOFAR wiki. The very latest (development) version of the cookbook can also be found on the `USG repository <http://usg.lofar.org/svn/documents/trunk/Tutorials/Imaging/>`_.
-
 The LOFAR software is continuously improving and, as a consequence, several procedures (and the cookbook itself) continuously change. In the following, we report an overview of the (recent) changes applied to the manual.
 
 --------------------------
@@ -12,10 +10,10 @@ Overview of recent changes
 --------------------------
 
 ^^^^^^^^^^^^^^^^^^^^^^^^^
-Version 23.2 (2019/06/18)
+Version 23.3 (2019/06/24)
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-+ Chapter "Running LOFAR pipelines inside Docker" updated for singularity
++ Chapter "Running LOFAR pipelines inside Docker" updated for singularity, lofar 4, and prefactor 3.0
 
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 Version 23.0 (2018/04/11)
