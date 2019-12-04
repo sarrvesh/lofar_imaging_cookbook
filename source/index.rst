@@ -28,6 +28,7 @@ Welcome to LOFAR Imaging Cookbook's documentation!
    shapelets
    sagecal
    buildlofar
+   calculator
    awimager
    tutorial
    acknowledgements
