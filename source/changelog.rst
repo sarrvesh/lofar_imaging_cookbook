@@ -10,6 +10,12 @@ Overview of recent changes
 --------------------------
 
 ^^^^^^^^^^^^^^^^^^^^^^^^^
+Version 24.0 (2020/01/08)
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
++ Chapter "LOFAR Unified Calculator for Imaging (LUCI)" added
+
+^^^^^^^^^^^^^^^^^^^^^^^^^
 Version 23.3 (2019/06/24)
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
