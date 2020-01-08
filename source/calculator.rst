@@ -27,15 +27,15 @@ The landing page of the LUCI web interface is shown below in :numref:`luci_inter
 Setting up an observation
 -------------------------
 
-The **Observational setup** section in LUCI allows users to specify an interferometric observing run with LOFAR. The 
+The **Observational setup** section in LUCI allows users to specify an interferometric observing run with LOFAR. The various fields under this section are:
 
-+ **Observation time (in seconds)** -- Duration of an observing run (default: 28800 seconds),
++ **Observation time (in seconds)** -- Duration of an observing run (default: 28800 seconds). LUCI throws an error if a negative value is provided as input.
 + **No. of core stations (0 - 24)** (default: 24)
 + **No. of remote stations (0 - 14)** (default: 14)
 + **No. of international stations (0 - 14)** (default: 14)
 + **Number of channels per subband** -- Frequency resolution of an observing run. Allowed values are 64, 128, and 256 channels per subband (default: 64)
-+ **Number of subbands** -- Number of subbands to record as part of the observing run (default: 488).
-+ **Integration time (in seconds)** - Correlator integration time. This input field determines the time resolution of the observing run. (default: 1 second)
++ **Number of subbands** -- Number of subbands to record as part of the observing run (default: 488). LUCI thows an error if the number of subbands is greater than 488.
++ **Integration time (in seconds)** - Correlator integration time. This input field determines the time resolution of the observing run (default: 1 second). LUCI thows an error if correlator time is smaller than 0.16 seconds.
 + **Antenna set** -- specifies the mode in which the stations are operated. Allowed values are LBA Outer, HBA Dual, and HBA Dual Inner. (default: HBA Dual Inner).
 
 Upon clicking the button **Calculate**, LUCI computes the theoretical image sensitivity and the raw data size. The results of this computation is displayed to the user under the **Results** section. Note that before doing the calculations, LUCI validates the input specified by the user. If an invalid input is detected, LUCI displays an error as shown in :numref:`luci_error`.
@@ -72,17 +72,53 @@ Upon clicking the **Calculate** button, LUCI calculates **Processed data size** 
 Specifying targets, calibrators, and A-team sources
 ---------------------------------------------------
 
-In addition to calculating the data sizes and processing times, LUCI also allows users to check if their target of interest is visible to LOFAR on a specific date. The target of interest can be specified in the **Target** field under the **Target setup** section. If the specified source is valid, the **Resolve** button can be used to obtain the coordinates of that source. If however, the user wishes to manually input the coordinates, a target name must also be specified. The specified target name **Note** that an error message is thrown if the number of sources mentioned in the **Target** field does not match 
+Besides calculating the data sizes and processing times, LUCI also allows users to check if their target of interest is visible to LOFAR on a specific date. The target of interest can be specified in the **Target** field under the **Target setup** section. If the specified source is valid, the **Resolve** button can be used to obtain the coordinates of that source. Note that LUCI can resolve valid LoTSS pointing names as well (like P17 or P205+67). If however, the user wishes to manually input the coordinates, a target name must also be specified. The **Observation date** field allows the user to specify a date on which the target elevation needs to be calculated.
+
+In addition to plotting the target, users can also plot the elevations of standard LOFAR calibrators and A-team sources by selecting them using the **Calibrators** and the **A-team sources** dropdown boxes. 
+
+Upon clicking the **Calculate** button, LUCI produces three plots like the once shown below:
+
++ **Target visibility plot** shows the elevation of a target as seen by LOFAR on the specified date as an interactive plot. If the field **No. of international stations (0-14)** is set to 0 (i.e.) observing with only the Dutch array, the target elevation is calculated with respect to the LOFAR core. On the other hand, if the user specifies the full array, LUCI plots the minimum apparent elevation of the target as seen by all LOFAR stations. In addition to the user-specified target, LUCI also plots the elevations of the Sun, the Moon, and Jupiter by default. The two blue regions indicate the sunrise and sunset times. 
++ **Beam Layout** plots the tile and station beams for the specified observation.
++ **Angular distance between specified target and other bright sources** table.
+
+.. _luci_single_target:
+
+.. figure:: figures/luci_single_target.png
+   :align: center
+   
+   LUCI web interface showing the target visibility and beam layout plots along with a table showing the angular distance between the specified target and known bright radio sources. Note that the target visibility plot shows the elevation of the Sun, the Moon and Jupiter in addition to the user-specified target. Also note that both the target visibility and beam layout plots are interactive plots.
 
 ----------------------------------
 Setting up multi-beam observations
 ----------------------------------
 
-In the previous section, we demonstrated how to ...
+To observe multiple sources with LOFAR simultaeously making use of its multi-beam capability, the user can specify multiple sources in the **Target** field as a comma-separated value. LUCI can handle coordinate resolution of both single and multiple sources. While specifying multiple sources, LUCI will throw an error if 
+
++ the number of sources mentioned in the **Target** field does not match the number of coordinates,
++ the number of sources times the number of subbands is greater than 488. This is because any LOFAR observation cannot have more than 488 subbands.
+
+.. _luci_multi_target:
+
+.. figure:: figures/luci_multi_target.png
+   :align: center
+   
+   LUCI web interface showing the target visibility and beam layout plots along with a table showing the angular distance between the specified targets and known bright radio sources. 
 
 -------------------
 Exporting the setup
 -------------------
+
+Users can export their "observational setup" to a PDF file using the **Generate PDF** button. Upon clicking the **Generate PDF** button, LUCI exposes the **Download file** link (see :numref:`luci_export`) below the two buttons which can be used to download the generated PDF file.
+
+.. _luci_export:
+
+.. figure:: figures/luci_export.png
+   :align: center
+   
+   LUCI web interface showing the PDF download link after a user clicks on the **Generate PDF** button.
+
+**Note** that if you click on the **Generate PDF** button before using the **Calculate** button, LUCI will throw an error.
 
 --------------------------------
 Frequently Asked Questions (FAQ)
@@ -90,7 +126,7 @@ Frequently Asked Questions (FAQ)
 
 **In what framework is LUCI implemented?**
 
-    LUCI is implemented in using the `Dash <https://github.com/plotly/dash>`_ which is a simple Python framework for building web applications. Interactive plotting is done using `Plotly <https://github.com/plotly/plotly.py>`_.
+    LUCI is implemented using `Dash <https://github.com/plotly/dash>`_ which is a simple Python framework for building web applications. Interactive plotting is done using `Plotly <https://github.com/plotly/plotly.py>`_.
 
 **Can I contribute to LUCI?**
 

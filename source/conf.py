@@ -55,7 +55,7 @@ author = u'Edited by Sarrvesh Sridhar'
 # built documents.
 #
 # The short X.Y version.
-version = u'23.3'
+version = u'24.0'
 # The full version, including alpha/beta/rc tags.
 release = u'23.3'
 
