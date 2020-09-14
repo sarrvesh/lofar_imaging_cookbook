@@ -18,17 +18,18 @@ What is in the LOFAR docker image?
 
 The docker image contains all the software packages that a user needs to run the LOFAR imaging pipelines like prefactor and factor. This includes the LOFAR offline software suite (containing tools like NDPPP and genericpipeline) along with other external tools like LoSoTo, AOFlagger, and WSClean. All packages included in this docker image are listed below:
 
-+ Casacore (version 3.1.0 including measures data)
-+ Casarest (version 1.5.0)
-+ python-casacore (version 3.0.0)
++ Casacore (version 2.4.1 including measures data)
++ python-casacore (version 3.2.0)
 + AOFlagger (version 2.14)
-+ Source finder pyBDSF 
-+ LOFAR software (version 4.0.0)
-+ WSClean (version 2.7 including support for LOFAR primary beam and IDG)
++ Source finder pyBDSF (version 1.9.2)
++ DPPP (version 4.1)
++ LOFAR software (version 3.2.1)
++ WSClean (version 2.8 including support for LOFAR primary beam and IDG)
 + LoSoTo (release 2.0)
 + RMextract (version 0.4)
-+ LSMTool
-+ Dysco
++ LSMTool (version 1.4.2)
++ Dysco (version 1.2)
++ Factor
 + Python packages (including numpy, scipy, matplotlib)
 
 --------------------------------
